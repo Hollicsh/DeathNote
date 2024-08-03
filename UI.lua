@@ -1493,7 +1493,7 @@ function DeathNote.ToolsDropDownInitialize(self, level)
 		info.text = L["Options"]
 		info.value = "OPTIONS"
 		info.notCheckable = 1
-		info.func = function() InterfaceOptionsFrame_OpenToCategory(L["Death Note"]) end
+		info.func = function() Settings.OpenToCategory(L["Death Note"]) end
 		UIDropDownMenu_AddButton(info, level)
 
 		wipe(info)

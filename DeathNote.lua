@@ -50,7 +50,7 @@ function DeathNote:OnInitialize()
 					DeathNote:ShowUnit(UnitName("target"))
 				end
 			elseif button == "RightButton" then
-				InterfaceOptionsFrame_OpenToCategory(L["Death Note"])
+				Settings.OpenToCategory(L["Death Note"])
 			end
 		end,
 		OnTooltipShow = function(tooltip)
