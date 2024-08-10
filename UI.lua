@@ -37,9 +37,6 @@ local source_hilight = { r = 0, g = 0, b = 0.6, a = 0.4 }
 
 local tinsert, tremove, string_find, string_format = table.insert, table.remove, string.find, format;
 
-local LocalizedClassList = { };
-FillLocalizedClassList(LocalizedClassList);
-
 local function table_contains_value(t, v)
 	for _, value in pairs(t) do
 		if (value == v) then
