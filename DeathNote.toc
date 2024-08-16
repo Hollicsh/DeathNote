@@ -1,4 +1,4 @@
-﻿## Interface: 110000
+﻿## Interface: 110002
 ## Title: DeathNote
 ## Notes: Death analysis tool
 ## Notes-ruRU: Аддон, позволяющий анализировать смерти членов Вашей группы или рейда

@@ -1,3 +1,7 @@
+-- luacheck: globals LibStub C_Spell
+
+local C_Spell_GetSpellInfo, C_Spell_GetSpellTexture = C_Spell.GetSpellInfo, C_Spell.GetSpellTexture;
+
 local L = LibStub("AceLocale-3.0"):GetLocale("DeathNote")
 local LibDDE = LibStub("LibDropDownExtension-1.0", true);
 
@@ -650,7 +654,9 @@ function DeathNote:Show()
 		auras_tab_spacer2:SetVertexColor(0.4, 0.4, 0.4)
 		auras_tab_spacer2:SetTexCoord(0.625-0.0625, 0.628, 0, 1)
 		auras_tab_spacer2:SetPoint("TOPLEFT", auras_tab_button, "BOTTOMRIGHT", -10, 3)
-		auras_tab_spacer2:SetPoint("TOPRIGHT", topright, "TOPLEFT")
+		auras_tab_spacer2:SetPoint("TOPRIGHT", topright, "TOPLEFT");
+
+		local classList = LocalizedClassList();
 
 		local auras_options = {
 			type = "group",
@@ -719,16 +725,17 @@ function DeathNote:Show()
 									-- value.text, value.font, value.icon, value.func, value.onEnter, value.onLeave
 									local t = { };
 									for spellID, spellInfo in pairs(DeathNote.SurvivalIDs) do
-										local spellName = GetSpellInfo(spellID);
-										if (not spellName) then error("Unknown survival spellID: "..spellID) end
+										local spell = C_Spell_GetSpellInfo(spellID);
+										if (not spell) then error("Unknown survival spellID: "..spellID) end
 										tinsert(t, {
-											text = string_format("[%s] %s", LocalizedClassList[spellInfo.class], spellName),
+											text = string_format("[%s] %s", classList[spellInfo.class], spell.name),
 											font = nil,
-											icon = GetSpellTexture(spellID),
+											icon = C_Spell_GetSpellTexture(spellID),
 											dontCloseOnClick = true,
 											disabled = DeathNote.settings.display_filters.ignored_highlight_survival[spellID],
 											func = function(buttonInfo)
-												local btn = selector.GetButtonByText(string_format("[%s] %s", LocalizedClassList[buttonInfo.class], GetSpellInfo(buttonInfo.spellID)));
+												local spell = C_Spell_GetSpellInfo(buttonInfo.spellID);
+												local btn = selector.GetButtonByText(string_format("[%s] %s", classList[buttonInfo.class], spell ~= nil and spell.name or ""));
 												if (btn) then
 													buttonInfo.disabled = not buttonInfo.disabled;
 													btn:SetGray(buttonInfo.disabled);

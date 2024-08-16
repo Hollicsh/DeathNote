@@ -1,8 +1,11 @@
+-- luacheck: globals LibStub C_Spell
+
 local L = LibStub("AceLocale-3.0"):GetLocale("DeathNote")
 
-local tinsert, tremove = table.insert, table.remove
-local floor = math.floor
+local tinsert = table.insert;
+local floor = math.floor;
 local SCHOOL_MASK_PHYSICAL = 1;
+local C_Spell_GetSpellInfo, C_Spell_GetSpellLink = C_Spell.GetSpellInfo, C_Spell.GetSpellLink;
 
 local function CommaNumber(num)
 	local found
@@ -117,16 +120,12 @@ local function FormatIcon(icon)
 end
 
 local function FormatSpell(spellId, spellName, spellSchool)
-	local name, _, icon = GetSpellInfo(spellId)
+	local spell = C_Spell_GetSpellInfo(spellId);
 	local colorArray = CombatLog_Color_ColorArrayBySchool(spellSchool, DEFAULT_COMBATLOG_FILTER_TEMPLATE)
 	local colorstr = CombatLog_Color_FloatToText(colorArray.r, colorArray.g, colorArray.b, colorArray.a)
 
-	if not name then
-		name = spellName or L["Unknown"]
-	end
-	if not icon then
-		icon = "Interface\\Icons\\Temp"
-	end
+	local name = spell ~= nil and spell.name or spellName or L["Unknown"];
+	local icon = spell ~= nil and spell.iconID or "Interface\\Icons\\Temp";
 
 	return string.format("%s|c%s|Hspell:%i|h%s|h|r", FormatIcon(icon), colorstr, spellId, name)
 end
@@ -507,7 +506,10 @@ function DeathNote:CleanForChat(text)
 		gsub("(|r)", ""):
 		gsub("(|T.-|t", ""):
 		gsub("(|Hicon:(.-):.-|h.-|h)", function(_, iconBit) return iconBitMap[tonumber(iconBit)] or "" end):
-		gsub("(|Hspell:(%d*).-|h.-|h)", function(_, id) return GetSpellInfo(id) and GetSpellLink(id) or id end):
+		gsub("(|Hspell:(%d*).-|h.-|h)", function(_, id)
+			local spell = C_Spell_GetSpellInfo(id);
+			return spell ~= nil and C_Spell_GetSpellLink(id) or id;
+		end):
 		gsub("(|Hunit.-|h(.-)|h)", "%2"):
 		gsub("(|Haction.-|h(.-)|h)", "%2")
 end
