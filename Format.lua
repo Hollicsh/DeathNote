@@ -295,7 +295,7 @@ end
 ------------------------------------------------------------------------------
 
 local function SpellChat(spellId, spellName, spellSchool)
-	return GetSpellLink(spellId)
+	return C_Spell_GetSpellLink(spellId)
 end
 
 local function SwingChat()
@@ -311,7 +311,7 @@ local function UnitDiedChat()
 end
 
 local function ExtraSpellChat(spellId, spellName, spellSchool, extraSpellId, extraSpellName, extraSchool)
-	return GetSpellLink(extraSpellId)
+	return C_Spell_GetSpellLink(extraSpellId)
 end
 
 ------------------------------------------------------------------------------
